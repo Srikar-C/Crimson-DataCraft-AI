@@ -15,6 +15,12 @@ from django.http import HttpResponseServerError
 
 
 
+inputImgRootPath = os.path.join(settings.SAMPLE_ROOT,'input')
+outputImgRootPath = os.path.join(settings.SAMPLE_ROOT,'output')
+
+
+
+
 #------------------------------------------User Login and Sign Up--------------------------------------------------#
 
 def login(request):
@@ -66,7 +72,6 @@ def aug(request):
 
 
 
-
 #-----------------------------------------------Image Augmentation-------------------------------------------------#
 
 
@@ -97,26 +102,30 @@ def addImage(request):
 
 def rotateImage(request):
     global uploaded_image_path
+    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
     try:
         if uploaded_image_path:
-            temp_dir = "C:/Users/T VAMSI/Documents/Desktop/Crimson/newUI/CAT/crimsontool/input"
-            os.makedirs(temp_dir, exist_ok=True)
-
-            temp_image_path = os.path.join(temp_dir, "uploaded_image.jpg")
+            
+            os.makedirs(inputImgRootPath, exist_ok=True)
+            temp_image_path = os.path.join(inputImgRootPath, "uploaded_image.jpg")
             shutil.copyfile(uploaded_image_path, temp_image_path)
 
-            cmnd = f'python3 crimsontool/data_augmentor.py --input "{temp_dir}" --output "C:/Users/T VAMSI/Documents/Desktop/Crimson/newUI/CAT/crimsontool/output" --rotate'
+
+            cmnd = f'py crimsontool/data_augmentor.py --input "{inputImgRootPath}" --output "{outputImgRootPath}" --rotate'
             os.system(cmnd)
 
-            shutil.rmtree(temp_dir)
+
+            Fname = getFileName(outputImgRootPath)
+            disImage = os.path.join('crimsontool','output',Fname)
+
         else:
             print("No uploaded image found.")
        
     except Exception as e:
         print(f"An error occurred: {e}")
 
-    return render(request, 'aug.html')
+    return render(request, 'aug.html',{'img':disImage,'title':'Rotated Image'})
 
 
 
@@ -125,24 +134,28 @@ def FlipImage(request):
 
     try:
         if uploaded_image_path:
-            temp_dir = "C:/Users/T VAMSI/Documents/Desktop/Crimson/newUI/CAT/crimsontool/input"
-            os.makedirs(temp_dir, exist_ok=True)
 
-            temp_image_path = os.path.join(temp_dir, "uploaded_image.jpg")
+            os.makedirs(inputImgRootPath, exist_ok=True)
+            temp_image_path = os.path.join(inputImgRootPath, "uploaded_image.jpg")
             shutil.copyfile(uploaded_image_path, temp_image_path)
 
-            cmnd = f'python3 crimsontool/data_augmentor.py --input "{temp_dir}" --output "C:/Users/T VAMSI/Documents/Desktop/Crimson/newUI/CAT/crimsontool/output" --flip'
+
+            cmnd = f'py crimsontool/data_augmentor.py --input "{inputImgRootPath}" --output "{outputImgRootPath}" --flip'
             os.system(cmnd)
 
-            shutil.rmtree(temp_dir)
+            Fname = getFileName(outputImgRootPath)
+            # print('Fname',Fname)
+            disImage = os.path.join('crimsontool','output',Fname)    
+
+            # shutil.rmtree(temp_dir)
         else:
             print("No uploaded image found.")
        
     except Exception as e:
         print(f"An error occurred: {e}")
 
-    return render(request, 'aug.html')
-
+    # return render(request, 'aug.html')
+    return render(request, 'aug.html',{'img':disImage,'title':'Fliped Image'})
 
 
 def ScaleImage(request):
@@ -150,23 +163,28 @@ def ScaleImage(request):
 
     try:
         if uploaded_image_path:
-            temp_dir = "C:/Users/T VAMSI/Documents/Desktop/Crimson/newUI/CAT/crimsontool/input"
-            os.makedirs(temp_dir, exist_ok=True)
 
-            temp_image_path = os.path.join(temp_dir, "uploaded_image.jpg")
+
+            os.makedirs(inputImgRootPath, exist_ok=True)
+            temp_image_path = os.path.join(inputImgRootPath, "uploaded_image.jpg")
             shutil.copyfile(uploaded_image_path, temp_image_path)
 
-            cmnd = f'python3 crimsontool/data_augmentor.py --input "{temp_dir}" --output "C:/Users/T VAMSI/Documents/Desktop/Crimson/newUI/CAT/crimsontool/output" --scale'
+
+            cmnd = f'py crimsontool/data_augmentor.py --input "{inputImgRootPath}" --output "{outputImgRootPath}" --scale'
             os.system(cmnd)
 
-            shutil.rmtree(temp_dir)
+            Fname = getFileName(outputImgRootPath)
+            disImage = os.path.join('crimsontool','output',Fname)
+
+
         else:
             print("No uploaded image found.")
        
     except Exception as e:
         print(f"An error occurred: {e}")
 
-    return render(request, 'aug.html')
+    # return render(request, 'aug.html')
+    return render(request, 'aug.html',{'img':disImage,'title':'Scaled Image'})
 
 
 
@@ -175,23 +193,25 @@ def ContrastImage(request):
 
     try:
         if uploaded_image_path:
-            temp_dir = "C:/Users/T VAMSI/Documents/Desktop/Crimson/newUI/CAT/crimsontool/input"
-            os.makedirs(temp_dir, exist_ok=True)
-
-            temp_image_path = os.path.join(temp_dir, "uploaded_image.jpg")
+            
+            os.makedirs(inputImgRootPath, exist_ok=True)
+            temp_image_path = os.path.join(inputImgRootPath, "uploaded_image.jpg")
             shutil.copyfile(uploaded_image_path, temp_image_path)
 
-            cmnd = f'python3 crimsontool/data_augmentor.py --input "{temp_dir}" --output "C:/Users/T VAMSI/Documents/Desktop/Crimson/newUI/CAT/crimsontool/output" --contrast'
+
+            cmnd = f'py crimsontool/data_augmentor.py --input "{inputImgRootPath}" --output "{outputImgRootPath}" --contrast'
             os.system(cmnd)
 
-            shutil.rmtree(temp_dir)
+            Fname = getFileName(outputImgRootPath)
+            disImage = os.path.join('crimsontool','output',Fname)
         else:
             print("No uploaded image found.")
        
     except Exception as e:
         print(f"An error occurred: {e}")
 
-    return render(request, 'aug.html')
+    # return render(request, 'aug.html')
+    return render(request, 'aug.html',{'img':disImage,'title':'Contrasted Image'})
 
 
 
@@ -200,23 +220,25 @@ def BrightnessImage(request):
 
     try:
         if uploaded_image_path:
-            temp_dir = "C:/Users/T VAMSI/Documents/Desktop/Crimson/newUI/CAT/crimsontool/input"
-            os.makedirs(temp_dir, exist_ok=True)
-
-            temp_image_path = os.path.join(temp_dir, "uploaded_image.jpg")
+           
+            os.makedirs(inputImgRootPath, exist_ok=True)
+            temp_image_path = os.path.join(inputImgRootPath, "uploaded_image.jpg")
             shutil.copyfile(uploaded_image_path, temp_image_path)
 
-            cmnd = f'python3 crimsontool/data_augmentor.py --input "{temp_dir}" --output "C:/Users/T VAMSI/Documents/Desktop/Crimson/newUI/CAT/crimsontool/output" --brightness'
+
+            cmnd = f'py crimsontool/data_augmentor.py --input "{inputImgRootPath}" --output "{outputImgRootPath}" --brightness'
             os.system(cmnd)
 
-            shutil.rmtree(temp_dir)
+            Fname = getFileName(outputImgRootPath)
+            disImage = os.path.join('crimsontool','output',Fname)
         else:
             print("No uploaded image found.")
        
     except Exception as e:
         print(f"An error occurred: {e}")
 
-    return render(request, 'aug.html') 
+    # return render(request, 'aug.html')
+    return render(request, 'aug.html',{'img':disImage,'title':'Brighten Image'}) 
 
 
 
@@ -225,23 +247,25 @@ def ShearImage(request):
 
     try:
         if uploaded_image_path:
-            temp_dir = "C:/Users/T VAMSI/Documents/Desktop/Crimson/newUI/CAT/crimsontool/input"
-            os.makedirs(temp_dir, exist_ok=True)
-
-            temp_image_path = os.path.join(temp_dir, "uploaded_image.jpg")
+         
+            os.makedirs(inputImgRootPath, exist_ok=True)
+            temp_image_path = os.path.join(inputImgRootPath, "uploaded_image.jpg")
             shutil.copyfile(uploaded_image_path, temp_image_path)
 
-            cmnd = f'python3 crimsontool/data_augmentor.py --input "{temp_dir}" --output "C:/Users/T VAMSI/Documents/Desktop/Crimson/newUI/CAT/crimsontool/output" --shear'
+
+            cmnd = f'py crimsontool/data_augmentor.py --input "{inputImgRootPath}" --output "{outputImgRootPath}" --shear'
             os.system(cmnd)
 
-            shutil.rmtree(temp_dir)
+            Fname = getFileName(outputImgRootPath)
+            disImage = os.path.join('crimsontool','output',Fname)
         else:
             print("No uploaded image found.")
        
     except Exception as e:
         print(f"An error occurred: {e}")
 
-    return render(request, 'aug.html')
+    # return render(request, 'aug.html')
+    return render(request, 'aug.html',{'img':disImage,'title':'Sheared Image'})
 
 
 
@@ -250,24 +274,25 @@ def TranslateImage(request):
 
     try:
         if uploaded_image_path:
-            temp_dir = "C:/Users/T VAMSI/Documents/Desktop/Crimson/newUI/CAT/crimsontool/input"
-            os.makedirs(temp_dir, exist_ok=True)
-
-            temp_image_path = os.path.join(temp_dir, "uploaded_image.jpg")
+            
+            os.makedirs(inputImgRootPath, exist_ok=True)
+            temp_image_path = os.path.join(inputImgRootPath, "uploaded_image.jpg")
             shutil.copyfile(uploaded_image_path, temp_image_path)
 
-            cmnd = f'python3 crimsontool/data_augmentor.py --input "{temp_dir}" --output "C:/Users/T VAMSI/Documents/Desktop/Crimson/newUI/CAT/crimsontool/output" --translate'
+
+            cmnd = f'py crimsontool/data_augmentor.py --input "{inputImgRootPath}" --output "{outputImgRootPath}" --translate'
             os.system(cmnd)
 
-            shutil.rmtree(temp_dir)
+            Fname = getFileName(outputImgRootPath)
+            disImage = os.path.join('crimsontool','output',Fname)
         else:
             print("No uploaded image found.")
        
     except Exception as e:
         print(f"An error occurred: {e}")
 
-    return render(request, 'aug.html')
-
+    # return render(request, 'aug.html')
+    return render(request, 'aug.html',{'img':disImage,'title':'Translated Image'})
 
 
 def GrayScaleImage(request):
@@ -275,23 +300,25 @@ def GrayScaleImage(request):
 
     try:
         if uploaded_image_path:
-            temp_dir = "C:/Users/T VAMSI/Documents/Desktop/Crimson/newUI/CAT/crimsontool/input"
-            os.makedirs(temp_dir, exist_ok=True)
-
-            temp_image_path = os.path.join(temp_dir, "uploaded_image.jpg")
+         
+            os.makedirs(inputImgRootPath, exist_ok=True)
+            temp_image_path = os.path.join(inputImgRootPath, "uploaded_image.jpg")
             shutil.copyfile(uploaded_image_path, temp_image_path)
 
-            cmnd = f'python3 crimsontool/data_augmentor.py --input "{temp_dir}" --output "C:/Users/T VAMSI/Documents/Desktop/Crimson/newUI/CAT/crimsontool/output" --grayscale'
+
+            cmnd = f'py crimsontool/data_augmentor.py --input "{inputImgRootPath}" --output "{outputImgRootPath}" --greyscale'
             os.system(cmnd)
 
-            shutil.rmtree(temp_dir)
+            Fname = getFileName(outputImgRootPath)
+            disImage = os.path.join('crimsontool','output',Fname)
         else:
             print("No uploaded image found.")
        
     except Exception as e:
         print(f"An error occurred: {e}")
 
-    return render(request, 'aug.html')
+    # return render(request, 'aug.html')
+    return render(request, 'aug.html',{'img':disImage,'title':'GreyScaled Image'})
 
 
 
@@ -300,23 +327,25 @@ def ColorImage(request):
 
     try:
         if uploaded_image_path:
-            temp_dir = "C:/Users/T VAMSI/Documents/Desktop/Crimson/newUI/CAT/crimsontool/input"
-            os.makedirs(temp_dir, exist_ok=True)
-
-            temp_image_path = os.path.join(temp_dir, "uploaded_image.jpg")
+           
+            os.makedirs(inputImgRootPath, exist_ok=True)
+            temp_image_path = os.path.join(inputImgRootPath, "uploaded_image.jpg")
             shutil.copyfile(uploaded_image_path, temp_image_path)
 
-            cmnd = f'python3 crimsontool/data_augmentor.py --input "{temp_dir}" --output "C:/Users/T VAMSI/Documents/Desktop/Crimson/newUI/CAT/crimsontool/output" --color'
+
+            cmnd = f'py crimsontool/data_augmentor.py --input "{inputImgRootPath}" --output "{outputImgRootPath}" --color'
             os.system(cmnd)
 
-            shutil.rmtree(temp_dir)
+            Fname = getFileName(outputImgRootPath)
+            disImage = os.path.join('crimsontool','output',Fname)
         else:
             print("No uploaded image found.")
        
     except Exception as e:
         print(f"An error occurred: {e}")
 
-    return render(request, 'aug.html')
+    # return render(request, 'aug.html')
+    return render(request, 'aug.html',{'img':disImage,'title':'Colored Image'})
 
 
 
@@ -325,23 +354,25 @@ def EqualizeImage(request):
 
     try:
         if uploaded_image_path:
-            temp_dir = "C:/Users/T VAMSI/Documents/Desktop/Crimson/newUI/CAT/crimsontool/input"
-            os.makedirs(temp_dir, exist_ok=True)
-
-            temp_image_path = os.path.join(temp_dir, "uploaded_image.jpg")
+           
+            os.makedirs(inputImgRootPath, exist_ok=True)
+            temp_image_path = os.path.join(inputImgRootPath, "uploaded_image.jpg")
             shutil.copyfile(uploaded_image_path, temp_image_path)
 
-            cmnd = f'python3 crimsontool/data_augmentor.py --input "{temp_dir}" --output "C:/Users/T VAMSI/Documents/Desktop/Crimson/newUI/CAT/crimsontool/output" --equalize'
+
+            cmnd = f'py crimsontool/data_augmentor.py --input "{inputImgRootPath}" --output "{outputImgRootPath}" --equalize'
             os.system(cmnd)
 
-            shutil.rmtree(temp_dir)
+            Fname = getFileName(outputImgRootPath)
+            disImage = os.path.join('crimsontool','output',Fname)
         else:
             print("No uploaded image found.")
        
     except Exception as e:
         print(f"An error occurred: {e}")
 
-    return render(request, 'aug.html')
+    # return render(request, 'aug.html')
+    return render(request, 'aug.html',{'img':disImage,'title':'Equalized Image'})
 
 
 
@@ -350,23 +381,25 @@ def BlurImage(request):
 
     try:
         if uploaded_image_path:
-            temp_dir = "C:/Users/T VAMSI/Documents/Desktop/Crimson/newUI/CAT/crimsontool/input"
-            os.makedirs(temp_dir, exist_ok=True)
-
-            temp_image_path = os.path.join(temp_dir, "uploaded_image.jpg")
+           
+            os.makedirs(inputImgRootPath, exist_ok=True)
+            temp_image_path = os.path.join(inputImgRootPath, "uploaded_image.jpg")
             shutil.copyfile(uploaded_image_path, temp_image_path)
 
-            cmnd = f'python3 crimsontool/data_augmentor.py --input "{temp_dir}" --output "C:/Users/T VAMSI/Documents/Desktop/Crimson/newUI/CAT/crimsontool/output" --blur'
+
+            cmnd = f'py crimsontool/data_augmentor.py --input "{inputImgRootPath}" --output "{outputImgRootPath}" --blur'
             os.system(cmnd)
 
-            shutil.rmtree(temp_dir)
+            Fname = getFileName(outputImgRootPath)
+            disImage = os.path.join('crimsontool','output',Fname)
         else:
             print("No uploaded image found.")
        
     except Exception as e:
         print(f"An error occurred: {e}")
 
-    return render(request, 'aug.html')
+    # return render(request, 'aug.html')
+    return render(request, 'aug.html',{'img':disImage,'title':'Blured Image'})
 
 
 
@@ -375,23 +408,25 @@ def NoiseImage(request):
 
     try:
         if uploaded_image_path:
-            temp_dir = "C:/Users/T VAMSI/Documents/Desktop/Crimson/newUI/CAT/crimsontool/input"
-            os.makedirs(temp_dir, exist_ok=True)
-
-            temp_image_path = os.path.join(temp_dir, "uploaded_image.jpg")
+            
+            os.makedirs(inputImgRootPath, exist_ok=True)
+            temp_image_path = os.path.join(inputImgRootPath, "uploaded_image.jpg")
             shutil.copyfile(uploaded_image_path, temp_image_path)
 
-            cmnd = f'python3 crimsontool/data_augmentor.py --input "{temp_dir}" --output "C:/Users/T VAMSI/Documents/Desktop/Crimson/newUI/CAT/crimsontool/output" --noise'
+
+            cmnd = f'py crimsontool/data_augmentor.py --input "{inputImgRootPath}" --output "{outputImgRootPath}" --noise'
             os.system(cmnd)
 
-            shutil.rmtree(temp_dir)
+            Fname = getFileName(outputImgRootPath)
+            disImage = os.path.join('crimsontool','output',Fname)
         else:
             print("No uploaded image found.")
        
     except Exception as e:
         print(f"An error occurred: {e}")
 
-    return render(request, 'aug.html')
+    # return render(request, 'aug.html')
+    return render(request, 'aug.html',{'img':disImage,'title':'Noised Image'})
 
 
 
@@ -400,23 +435,26 @@ def ErasingImage(request):
 
     try:
         if uploaded_image_path:
-            temp_dir = "C:/Users/T VAMSI/Documents/Desktop/Crimson/newUI/CAT/crimsontool/input"
-            os.makedirs(temp_dir, exist_ok=True)
-
-            temp_image_path = os.path.join(temp_dir, "uploaded_image.jpg")
+          
+            os.makedirs(inputImgRootPath, exist_ok=True)
+            temp_image_path = os.path.join(inputImgRootPath, "uploaded_image.jpg")
             shutil.copyfile(uploaded_image_path, temp_image_path)
 
-            cmnd = f'python3 crimsontool/data_augmentor.py --input "{temp_dir}" --output "C:/Users/T VAMSI/Documents/Desktop/Crimson/newUI/CAT/crimsontool/output" --erasing'
+
+            cmnd = f'py crimsontool/data_augmentor.py --input "{inputImgRootPath}" --output "{outputImgRootPath}" --erasing'
             os.system(cmnd)
 
-            shutil.rmtree(temp_dir)
+            Fname = getFileName(outputImgRootPath)
+            disImage = os.path.join('crimsontool','output',Fname)
+
         else:
             print("No uploaded image found.")
        
     except Exception as e:
         print(f"An error occurred: {e}")
 
-    return render(request, 'aug.html')
+    # return render(request, 'aug.html')
+    return render(request, 'aug.html',{'img':disImage,'title':'Erased Image'})
 
 
 
@@ -463,13 +501,13 @@ def videoData(request):
 
     sel_Vid = Videos.objects.all().count() - 1
     print('sel', vdb[sel_Vid]['video'])
+    norVideopath = os.path.join('media','videos','watch_v_YXhZJ5JPuqs.mp4')
+    # norVideopath = os.path.join('media','videos','SHORTS_VIDEO_s4YhWme.mp4')
+    print('NVP',norVideopath)
 
     try:
         print('try', sel_Vid)
         if videoClassificationUploadedVideoPath:
-
-            #temp_dir = "C:/Users/T VAMSI/Documents/Desktop/Crimson/newUI/CAT/crimsontool/input"
-            #DBVideoPath = "C:/Users/T VAMSI/Documents/Desktop/Crimson/newUI/CAT/media"
             temp_dir = os.path.join(os.getcwd(), "crimsontool", "input")
             DBVideoPath = os.path.join(settings.MEDIA_ROOT)
 
@@ -478,18 +516,19 @@ def videoData(request):
             temp_video_path = os.path.join(temp_dir, "uploaded_video.mp4")
             DBTempVideoPath = os.path.join(DBVideoPath, vdb[sel_Vid]['video'])
 
+            print(DBTempVideoPath)
+
             print('dbpath', vdb[sel_Vid]['video'])
             video_name = vdb[sel_Vid]['video'].split('/')
-            print('IN', video_name[1])
-            print('TVP', temp_video_path)
-            shutil.copyfile(videoClassificationUploadedVideoPath, temp_video_path)
+            # print('IN', video_name[1])
+            # print('TVP', temp_video_path)
+            # shutil.copyfile(videoClassificationUploadedVideoPath, temp_video_path)
 
-            print('tryif', sel_Vid)
+            # print('tryif', sel_Vid)
 
             print('process video')
-            #Vcmd = f'python3 crimsontool/yolov5/detect.py --weight yolov5s.pt --source "{DBTempVideoPath}" '
             script_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "yolov5", "detect.py")
-            Vcmd = f'python3 "{script_path}" --weight yolov5s.pt --source "{DBTempVideoPath}"'
+            Vcmd = f'py "{script_path}" --weight yolov5s.pt --source "{DBTempVideoPath}"'
 
             process = subprocess.Popen(Vcmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             stdout, stderr = process.communicate()
@@ -511,7 +550,11 @@ def videoData(request):
     sel_class_Vid = VidData.count() - 1
     print('selCal', VidData[sel_class_Vid]['video'])
 
-    return render(request, 'videoDisplay.html', {'vid': VidData[sel_class_Vid]['video'], 'Count': sel_class_Vid,'text':'SAMPLE'}) 
+    # return render(request, 'videoDisplay.html', {'vid': VidData[sel_class_Vid]['video'] , 'Count': sel_class_Vid,'text':'SAMPLE'}) 
+
+    return render(request, 'videoDisplay.html', {'vid':  norVideopath, 'Count': sel_class_Vid,'text':'SAMPLE'}) 
+    # return render(request, 'videoDisplay.html', {'vid': 'C:/Users/cit/Documents/Tasks/Django/Intern/working/CAT_updated1.5/CAT/media/videos/SHORTS_VIDEO_rJf1DuE.mp4' , 'Count': sel_class_Vid,'text':'SAMPLE'}) 
+
 
 
 
@@ -528,7 +571,7 @@ def videoLinkInput(request):
     try:
         if youtube_link:
             print('detect called')
-            Scmd = f'python3 crimsontool/yolov5/detect.py --weight yolov5s.pt --source "{youtube_link}" '
+            Scmd = f'py crimsontool/yolov5/detect.py --weight yolov5s.pt --source "{youtube_link}" '
 
             process = subprocess.Popen(Scmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             stdout, stderr = process.communicate()
@@ -537,13 +580,19 @@ def videoLinkInput(request):
                 print(f"Error executing the script:\n{stderr.decode('utf-8')}")
             else:
                 print(f"Script output:\n{stdout.decode('utf-8')}")
-                output_text = stdout.decode('utf-8').strip()
+                OP = stdout.decode('utf-8').strip()
         else:
             print("No downloaded video found.")
     except Exception as e:
         print(f"An error occurred: {e}")
+    
+    disVid = YoutubeLinks(videoLink=OP)
+    disVid.save()
+    VidData = YoutubeLinks.objects.all().values()
+    sel_class_Vid = VidData.count() - 1
+    print('selCal', VidData[sel_class_Vid]['videoLink'])
 
-    return render(request, 'videoDisplay.html')
+    return render(request, 'YL.html', {'vid': VidData[sel_class_Vid]['videoLink'], 'Count': sel_class_Vid,'text':'SAMPLE'}) 
 
 
 
@@ -569,10 +618,7 @@ def imageUpload(request):
     try:
         print('try',sel_Img)
         if imageClassificationUploadedImagePath:
-            
-            #temp_dir = "C:/Users/T VAMSI/Documents/Desktop/Crimson/newUI/CAT/crimsontool/input"
             temp_dir = os.path.join(os.getcwd(), "crimsontool", "input")
-            #DBImgPath = "C:/Users/T VAMSI/Documents/Desktop/Crimson/newUI/CAT/media"
             DBImgPath = os.path.join(settings.MEDIA_ROOT)
             os.makedirs(temp_dir, exist_ok=True)
 
@@ -591,11 +637,9 @@ def imageUpload(request):
 
             
             print('rotate called')
-            #Scmd = f'python3 crimsontool/yolov5/detect.py --weight yolov5s.pt --source "{DBTempImagePath}" '
             script_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "yolov5", "detect.py")
             print("-----------",script_path)
-            #Scmd = f'python3 {script_path} --weight yolov5s.pt --source "{DBTempImagePath}"'
-            Scmd = f'python3 "{script_path}" --weight yolov5s.pt --source "{DBTempImagePath}"'
+            Scmd = f'python "{script_path}" --weight yolov5s.pt --source "{DBTempImagePath}"'
 
 
 
@@ -617,7 +661,6 @@ def imageUpload(request):
 
     print('OP',type(OP),str(img_data))
 
-    # imgPath = os.path.join(OP,str(img_data))
     disImg = ImgClassifierDisplay(Image=OP)
     disImg.save()
     ImData = ImgClassifierDisplay.objects.all().values()
@@ -630,7 +673,7 @@ def imageUpload(request):
 
 
 
-#------------Folder Upload------------------------------------------------------#
+#----------------------------------Folder Upload------------------------------------------------------#
 
 def handle_folder_upload(request):
     try:
@@ -659,19 +702,17 @@ def handle_folder_upload(request):
                 })
             folder_instance.files_info = files_info
             folder_instance.save()
-            #temp_dir = "C:/Users/T VAMSI/Documents/Desktop/Crimson/newUI/CAT/crimsontool/input"
             temp_dir = os.path.join(os.getcwd(), "crimsontool", "input")
-            #DBImgPath = "C:/Users/T VAMSI/Documents/Desktop/Crimson/newUI/CAT/uploads"
             DBImgPath = os.path.join(settings.MEDIA_ROOT)
             os.makedirs(temp_dir, exist_ok=True)
 
             temp_folder_path = os.path.join(temp_dir, uploaded_folder_name)
             DBTempFolderPath = os.path.join(DBImgPath, uploaded_folder_name)
+            print('DB',DBTempFolderPath)
 
-            shutil.copytree(folder_path, temp_folder_path)
+            # shutil.copytree(folder_path, temp_folder_path)
             script_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "yolov5", "detect.py")
-            #cmd = f'python3 crimsontool/yolov5/detect.py --weight yolov5s.pt --source "{DBTempFolderPath}"'
-            Scmd = f'python3 "{script_path}" --weight yolov5s.pt --source "{DBTempFolderPath}"'
+            Scmd = f'py "{script_path}" --weight yolov5s.pt --source "{DBTempFolderPath}"'
             process = subprocess.Popen(Scmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             stdout, stderr = process.communicate()
 
@@ -679,6 +720,8 @@ def handle_folder_upload(request):
                 print(f"Error executing the script:\n{stderr.decode('utf-8')}")
             else:
                 print(f"Script output:\n{stdout.decode('utf-8')}")
+
+            # shutil.rmtree(DBTempFolderPath)
 
         else:
             print("GET request received for folder upload.")
@@ -688,4 +731,39 @@ def handle_folder_upload(request):
     contents = Folder.objects.all()
     data = {'folders': contents}
     return render(request, 'foldersUploads.html', data)
+
+
+
+def uploadedImage(request):
+    if request.method == 'POST' :
+        name = request.POST.get('name')
+        
+        print('name',name)
+
+        return JsonResponse('Uploaded successfully!', safe=False)
+    else:
+        return JsonResponse('Invalid request method or not AJAX', status=400, safe=False)
+
+
+
+
+
+
+
+#------------------------------------To get recent Filename-----------------------------------------#
+def getFileName(inpDirectory):
+    files = [os.path.join(inpDirectory, file) for file in os.listdir(inpDirectory) if os.path.isfile(os.path.join(inpDirectory, file))]
+
+    # If there are no files in the directory, return None
+    if not files:
+        return None
+
+    # Get the most recently added file based on creation time
+    most_recent_file = max(files, key=os.path.getctime)
+
+    filename = os.path.split(most_recent_file)
+    return filename[1]
+
+    
+
 

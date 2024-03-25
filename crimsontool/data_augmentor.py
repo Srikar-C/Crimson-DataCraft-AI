@@ -2,11 +2,15 @@ import Augmentor
 import argparse
 
 # Function to perform data augmentation
-def augment_data(input_dir, output_dir, num_samples, rotate, flip, scale, contrast, brightness, shear, translate, grayscale, blur, noise, color, equalize, erasing ):
+def augment_data(input_dir, output_dir, num_samples, rotate, flip, scale, contrast, brightness, shear, translate, greyscale,blur, noise, color, equalize, erasing ):
     p = Augmentor.Pipeline(input_dir, output_directory=output_dir)
+    print('dir...',p)
+
+    
 
     if rotate:
-        p.rotate(probability=0.7, max_left_rotation=25, max_right_rotation=25)
+        dp = p.rotate(probability=0.7, max_left_rotation=25, max_right_rotation=25)
+        print('dp',dp)
     if flip:
         p.flip_left_right(probability=0.5)
         p.flip_top_bottom(probability=0.5)
@@ -20,8 +24,8 @@ def augment_data(input_dir, output_dir, num_samples, rotate, flip, scale, contra
         p.shear(probability=0.4, max_shear_left=25, max_shear_right=25)
     if translate:
         p.random_distortion(probability=0.5, grid_width=4, grid_height=4, magnitude=8)
-    if grayscale:
-        p.random_grayscale(probability=0.5)
+    if greyscale:
+        p.greyscale(probability=0.5)
     if color:
          p.random_color(probability=0.5, min_factor=0.8, max_factor=1.2)
     if equalize:
@@ -40,7 +44,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Data Augmentation with Augmentor")
     parser.add_argument("--input_dir", type=str, required=True, help="Input directory containing images")
     parser.add_argument("--output_dir", type=str, required=True, help="Output directory for augmented images")
-    parser.add_argument("--num_samples", type=int, default=100, help="Number of augmented samples to generate")
+    parser.add_argument("--num_samples", type=int, default=1, help="Number of augmented samples to generate")
     parser.add_argument("--rotate", action="store_true", help="Apply random rotation")
     parser.add_argument("--flip", action="store_true", help="Apply random flip")
     parser.add_argument("--scale", action="store_true", help="Apply random scaling")
@@ -48,8 +52,8 @@ if __name__ == "__main__":
     parser.add_argument("--brightness", action="store_true", help="Apply random brightness adjustment")
     parser.add_argument("--shear", action="store_true", help="Apply random shear")
     parser.add_argument("--translate", action="store_true", help="Apply random translation")
+    parser.add_argument("--greyscale", action="store_true", help="Apply random greyscale")
     parser.add_argument("--blur", action="store_true", help="Apply random blur")
-    parser.add_argument("--grayscale", action="store_true", help="Apply random grayscale")
     parser.add_argument("--color", action="store_true", help="Apply random color")
     parser.add_argument("--noise", action="store_true", help="Add salt and pepper noise")
     parser.add_argument("--erasing", action="store_true", help="Apply random erasing")
@@ -57,4 +61,4 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    augment_data(args.input_dir, args.output_dir, args.num_samples, args.rotate, args.flip, args.scale, args.contrast, args.brightness, args.shear, args.translate,args.blur, args.grayscale, args.color, args.erasing, args.noise, args.equalize)
+    augment_data(args.input_dir, args.output_dir, args.num_samples, args.rotate, args.flip, args.scale, args.contrast, args.brightness, args.shear, args.translate, args.blur, args.greyscale, args.color, args.erasing, args.noise, args.equalize)

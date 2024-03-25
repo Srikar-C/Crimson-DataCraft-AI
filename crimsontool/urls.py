@@ -30,6 +30,7 @@ urlpatterns = [
     path('videoLinkInput', views.videoLinkInput, name='videoLinkInput'),
     path('imageUpload', views.imageUpload, name='imageUpload'),
     path('handle_folder_upload', views.handle_folder_upload, name='handle_folder_upload'),
+    path('uploadedImage/', views.uploadedImage, name='uploadedImage'),
 ]
 
 
