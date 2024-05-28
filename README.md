@@ -1,6 +1,6 @@
 <h3>This is one of the project I have involved as an intern in Crimson Innovative Technologies</h3>
-<h4>The project name is Crimson DataCraft AI</h4>
 <h3>I designed the web templates for this project</h3>
+<h4>The project name is Crimson DataCraft AI</h4>
 <p>These are the screens</p>
 
 
